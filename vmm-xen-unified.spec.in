@@ -64,6 +64,8 @@ socat -t 30 - UNIX:/var/run/qubes-pesign \
     < %{_builddir}/xen-%{version}-%{release}.efi \
     > %{_builddir}/xen-signed-%{version}-%{release}.efi
 
+test -s %{_builddir}/xen-signed-%{version}-%{release}.efi || exit 1
+
 %install
 install -D -m 0700 -- %{_builddir}/xen-%{version}-%{release}.efi "$RPM_BUILD_ROOT"/boot/uki-xen-signed-%{version}-%{release}.efi
 install -D -m 0755 -- %{SOURCE1} "$RPM_BUILD_ROOT"/etc/grub.d/25_unified_xen_linux
