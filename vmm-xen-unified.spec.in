@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, see <https://www.gnu.org/licenses/>.
 
-%define XEN_VERSION %(echo @VERSION@ | cut -d '+' -f1 | tr 'r' '-')
-%define LINUX_VERSION %(echo @VERSION@ | cut -d '+' -f2 | tr 'r' '-')
+%define XEN_VERSION %(echo @VERSION@ | cut -d '+' -f1 | tr 'r' '-')%{?fedora:.fc}%{?fedora}
+%define LINUX_VERSION %(echo @VERSION@ | cut -d '+' -f2 | tr 'r' '-').qubes%{?fedora:.fc}%{?fedora}
 
 %global debug_package %{nil}
 
@@ -31,8 +31,8 @@ URL:        https://www.qubes-os.org
 Source0:    %{name}-%{version}.tar.gz
 Source1:    25_unified_xen_linux
 
-BuildRequires: xen-hypervisor = 2001:%{XEN_VERSION}%{?dist}
-BuildRequires: kernel-latest = 1000:%{LINUX_VERSION}.qubes%{?dist}
+BuildRequires: xen-hypervisor = 2001:%{XEN_VERSION}
+BuildRequires: kernel-latest = 1000:%{LINUX_VERSION}
 BuildRequires: pesign
 BuildRequires: python3-rpm
 BuildRequires: qubes-core-dom0-linux >= 4.2.15-1
@@ -46,7 +46,7 @@ BuildRequires: qubes-core-dom0-linux >= 4.2.15-1
 %build
 
 # Generate an initramfs that will be used with uki-generate
-dracut --no-hostonly --kver %{LINUX_VERSION}.qubes%{?dist}.%{_arch} %{_builddir}/initramfs-%{LINUX_VERSION}.qubes%{?dist}.%{_arch}.img
+dracut --no-hostonly --kver %{LINUX_VERSION}.%{_arch} %{_builddir}/initramfs-%{LINUX_VERSION}.%{_arch}.img
 
 # Create an empty config file
 cat > %{_builddir}/config << EOF
@@ -54,7 +54,7 @@ cat > %{_builddir}/config << EOF
 EOF
 
 # Generate Unified Kernel Image
-/usr/lib/qubes/uki-generate /boot/efi/EFI/qubes/xen.efi %{_builddir}/config /boot/vmlinuz-%{LINUX_VERSION}.qubes%{?dist}.%{_arch} %{_builddir}/initramfs-%{LINUX_VERSION}.qubes%{?dist}.%{_arch}.img %{_builddir}/xen-%{version}-%{release}.efi
+/usr/lib/qubes/uki-generate /boot/efi/EFI/qubes/xen.efi %{_builddir}/config /boot/vmlinuz-%{LINUX_VERSION}.%{_arch} %{_builddir}/initramfs-%{LINUX_VERSION}.%{_arch}.img %{_builddir}/xen-%{version}-%{release}.efi
 
 # Sign the UKI with pesign
 socat - UNIX:/var/run/qubes-pesign < %{_builddir}/xen-%{version}-%{release}.efi > %{_builddir}/xen-signed-%{version}-%{release}.efi
