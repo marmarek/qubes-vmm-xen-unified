@@ -52,10 +52,17 @@ cat > %{_builddir}/config << EOF
 EOF
 
 # Generate Unified Kernel Image
-/usr/lib/qubes/uki-generate /boot/efi/EFI/qubes/xen.efi %{_builddir}/config /boot/vmlinuz-%{LINUX_VERSION}.%{_arch} %{_builddir}/initramfs-%{LINUX_VERSION}.%{_arch}.img %{_builddir}/xen-%{version}-%{release}.efi
+/usr/lib/qubes/uki-generate \
+    /boot/efi/EFI/qubes/xen.efi \
+    %{_builddir}/config \
+    /boot/vmlinuz-%{LINUX_VERSION}.%{_arch} \
+    %{_builddir}/initramfs-%{LINUX_VERSION}.%{_arch}.img \
+    %{_builddir}/xen-%{version}-%{release}.efi
 
 # Sign the UKI with pesign
-socat - UNIX:/var/run/qubes-pesign < %{_builddir}/xen-%{version}-%{release}.efi > %{_builddir}/xen-signed-%{version}-%{release}.efi
+socat - UNIX:/var/run/qubes-pesign \
+    < %{_builddir}/xen-%{version}-%{release}.efi \
+    > %{_builddir}/xen-signed-%{version}-%{release}.efi
 
 %install
 install -D -m 0700 -- %{_builddir}/xen-%{version}-%{release}.efi "$RPM_BUILD_ROOT"/boot/uki-xen-signed-%{version}-%{release}.efi
