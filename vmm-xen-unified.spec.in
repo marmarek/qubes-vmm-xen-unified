@@ -60,7 +60,7 @@ EOF
     %{_builddir}/xen-%{version}-%{release}.efi
 
 # Sign the UKI with pesign
-socat - UNIX:/var/run/qubes-pesign \
+socat -t 30 - UNIX:/var/run/qubes-pesign \
     < %{_builddir}/xen-%{version}-%{release}.efi \
     > %{_builddir}/xen-signed-%{version}-%{release}.efi
 
