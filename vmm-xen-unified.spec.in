@@ -33,8 +33,6 @@ Source1:    25_unified_xen_linux
 
 BuildRequires: xen-hypervisor = 2001:%{XEN_VERSION}
 BuildRequires: kernel-latest = 1000:%{LINUX_VERSION}
-BuildRequires: pesign
-BuildRequires: python3-rpm
 BuildRequires: qubes-core-dom0-linux >= 4.2.15-1
 
 %description
