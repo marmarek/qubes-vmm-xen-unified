@@ -87,34 +87,4 @@ echo usermod -aG pesign user | sudo tee -a /rw/config/rc.local
 
 ### `builder-dvm` - Socket Access
 
-Add to `/rw/config/rc.local`:
-```bash
-echo 'KEY_NAME="Qubes OS Unified Kernel Image Signing Key"' | sudo tee /etc/default/qubes-pesign
-```
-
-Copy `start-qubes-pesign.sh` to `/usr/local/bin/start-qubes-pesign.sh` and ensure it's executable:
-```bash
-sudo cp start-qubes-pesign.sh /usr/local/bin/
-sudo chmod +x /usr/local/bin/start-qubes-pesign.sh
-```
-
-Configure bind-dirs for `qubes-pesign.service`.
-
-First, create `/rw/config/qubes-bind-dirs.d/50_user.conf`:
-```
-binds+=( '/etc/systemd/system/qubes-pesign.service' )
-```
-
-Second, create the service file in the bind directory:
-```bash
-mkdir -p /rw/bind-dirs/etc/systemd/system/
-cp qubes-pesign.service /rw/bind-dirs/etc/systemd/system/
-```
-
-Finally, reload and enable the daemon:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable qubes-pesign
-```
-
-> Remark: Ensure the Qubes executor `builder-dvm` has the correct RPC policy set up.
+See README.md in qubes-builderv2
