@@ -1,8 +1,10 @@
 include:
 - file: /r4.3/gitlab-base.yml
   project: QubesOS/qubes-continuous-integration
+  ref: $CI_BRANCH_REF
 - file: /r4.3/gitlab-host.yml
   project: QubesOS/qubes-continuous-integration
+  ref: $CI_BRANCH_REF
 
 default:
   tags:
